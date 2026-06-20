@@ -1,0 +1,1407 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RSLogix5000Content SchemaRevision="1.0" SoftwareRevision="37.00" TargetName="example_1" TargetType="Controller" ContainsContext="false" Owner="zwood" ExportDate="Sat Jun 20 00:06:47 2026" ExportOptions="NoRawData L5KData DecoratedData ForceProtectedEncoding AllProjDocTrans">
+<Controller Use="Target" Name="example_1" ProcessorType="5069-L306ERM" MajorRev="37" MinorRev="11" ProjectCreationDate="Mon Mar 16 17:16:09 2026" LastModifiedDate="Sat Jun 20 00:06:32 2026" SFCExecutionControl="CurrentActive" SFCRestartPosition="MostRecent" SFCLastScan="DontScan" ProjectSN="16#d051_3f47"
+ MatchProjectToController="false" CanUseRPIFromProducer="false" InhibitAutomaticFirmwareUpdate="0" PassThroughConfiguration="EnabledWithAppend" DownloadProjectDocumentationAndExtendedProperties="true" DownloadProjectCustomProperties="true" ReportMinorOverflow="false" EtherNetIPMode="A1/A2: Dual-IP" AutoDiagsEnabled="true" WebServerEnabled="false" DataExchangeId="{F17013CF-6157-4A08-9771-093714478641}"
+>
+<Description>
+<![CDATA[small example ACD]]>
+</Description>
+<RedundancyInfo Enabled="false" KeepTestEditsOnSwitchOver="false"/>
+<Security Code="0" ChangesToDetect="16#ffff_ffff_ffff_ffff"/>
+<SafetyInfo/>
+<DataTypes>
+<DataType Name="AicCamera" Family="NoFamily" Class="User">
+<Description>
+<![CDATA[Camera interacts directly with these tags.]]>
+</Description>
+<Members>
+<Member Name="in" DataType="AicCameraIn" Dimension="0" Radix="NullType" Hidden="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Camera -> PLC]]>
+</Description>
+</Member>
+<Member Name="out" DataType="AicCameraOut" Dimension="0" Radix="NullType" Hidden="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[PLC -> Camera]]>
+</Description>
+</Member>
+</Members>
+</DataType>
+<DataType Name="AicCameraIn" Family="NoFamily" Class="User">
+<Members>
+<Member Name="ZZZZZZZZZZAicCameraI0" DataType="SINT" Dimension="0" Radix="Decimal" Hidden="true" ExternalAccess="Read/Write"/>
+<Member Name="running" DataType="BIT" Dimension="0" Radix="Decimal" Hidden="false" Target="ZZZZZZZZZZAicCameraI0" BitNumber="0" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[camera process active]]>
+</Description>
+</Member>
+<Member Name="faulted" DataType="BIT" Dimension="0" Radix="Decimal" Hidden="false" Target="ZZZZZZZZZZAicCameraI0" BitNumber="1" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[camera process raised an exception]]>
+</Description>
+</Member>
+<Member Name="inspectionCount" DataType="DINT" Dimension="0" Radix="Decimal" Hidden="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[incremented after each inspection]]>
+</Description>
+</Member>
+<Member Name="result" DataType="DINT" Dimension="0" Radix="Decimal" Hidden="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[user customizable result]]>
+</Description>
+</Member>
+</Members>
+</DataType>
+<DataType Name="AicCameraOut" Family="NoFamily" Class="User">
+<Members>
+<Member Name="ZZZZZZZZZZAicCameraO0" DataType="SINT" Dimension="0" Radix="Decimal" Hidden="true" ExternalAccess="Read/Write"/>
+<Member Name="start" DataType="BIT" Dimension="0" Radix="Decimal" Hidden="false" Target="ZZZZZZZZZZAicCameraO0" BitNumber="0" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[starts the camera process thread on a rising edge]]>
+</Description>
+</Member>
+<Member Name="stop" DataType="BIT" Dimension="0" Radix="Decimal" Hidden="false" Target="ZZZZZZZZZZAicCameraO0" BitNumber="1" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[stops the camera process thread on a rising edge]]>
+</Description>
+</Member>
+<Member Name="trigger" DataType="BIT" Dimension="0" Radix="Decimal" Hidden="false" Target="ZZZZZZZZZZAicCameraO0" BitNumber="2" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[camera takes image and begins processing on rising edge]]>
+</Description>
+</Member>
+</Members>
+</DataType>
+</DataTypes>
+<Modules>
+<Module Name="Local" CatalogNumber="5069-L306ERM" Vendor="1" ProductType="14" ProductCode="189" Major="37" Minor="11" ParentModule="Local" ParentModPortId="1" Inhibited="false" MajorFault="true"
+>
+<EKey State="Disabled"/>
+<Ports>
+<Port Id="1" Address="0" Type="5069" Upstream="false">
+<Bus Size="9"/>
+</Port>
+<Port Id="3" Type="Ethernet" Upstream="false">
+<Bus/>
+</Port>
+<Port Id="4" Type="Ethernet" Upstream="false">
+<Bus/>
+</Port>
+</Ports>
+</Module>
+</Modules>
+<AddOnInstructionDefinitions>
+<AddOnInstructionDefinition Name="HeartbeatCheck" Revision="1.0" ExecutePrescan="false" ExecutePostscan="false" ExecuteEnableInFalse="false" CreatedDate="2026-03-16T23:18:11.855Z" CreatedBy="ROCKWELL-VM\Zac" EditedDate="2026-03-17T21:24:59.240Z" EditedBy="ROCKWELL-VM\Zac" SoftwareRevision="v37.00">
+<Parameters>
+<Parameter Name="EnableIn" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Enable Input - System Defined Parameter]]>
+</Description>
+</Parameter>
+<Parameter Name="EnableOut" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Enable Output - System Defined Parameter]]>
+</Description>
+</Parameter>
+<Parameter Name="heartbeat" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="true" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[toggled every 1s by PC if connected]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="connected" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="true" ExternalAccess="Read Only">
+<Description>
+<![CDATA[indicates the heartbeat is alive]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="heartbeatInterval" TagType="Base" DataType="DINT" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[ms before heartbeat is missed. Should be slightly greater than time in PC prg to accound for jitter]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[1250]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="1250"/>
+</DefaultData>
+</Parameter>
+</Parameters>
+<LocalTags>
+<LocalTag Name="ons" DataType="DINT" Radix="Decimal" ExternalAccess="None">
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</DefaultData>
+</LocalTag>
+<LocalTag Name="heartbeatCheckTimer" DataType="TIMER" ExternalAccess="None">
+<DefaultData Format="L5K">
+<![CDATA[[0,1500,0]]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<Structure DataType="TIMER">
+<DataValueMember Name="PRE" DataType="DINT" Radix="Decimal" Value="1500"/>
+<DataValueMember Name="ACC" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="EN" DataType="BOOL" Value="0"/>
+<DataValueMember Name="TT" DataType="BOOL" Value="0"/>
+<DataValueMember Name="DN" DataType="BOOL" Value="0"/>
+</Structure>
+</DefaultData>
+</LocalTag>
+</LocalTags>
+<Routines>
+<Routine Name="Logic" Type="RLL">
+<RLLContent>
+<Rung Number="0" Type="N">
+<Comment>
+<![CDATA[HeartbeatCheck:
+
+Monitors the status of a heartbeat signals and returns a "connected" signal if it is updating as expected
+
+To use, place on a rung and run all the time
+Set the `heartbeat` tag on and off at the `heartbeatInterval`
+the `connected` output will stay on as long as the heartbeat continues to toggle on and off]]>
+</Comment>
+<Text>
+<![CDATA[NOP();]]>
+</Text>
+</Rung>
+<Rung Number="1" Type="N">
+<Text>
+<![CDATA[GE(heartbeatInterval,0)MOVE(heartbeatInterval,heartbeatCheckTimer.PRE);]]>
+</Text>
+</Rung>
+<Rung Number="2" Type="N">
+<Comment>
+<![CDATA[Reset a running a timer anytime the heartbeat changes. If the timer ever finishes, the camera program is disconnected. Heartbeat should toggle approx every 1s]]>
+</Comment>
+<Text>
+<![CDATA[[XIC(heartbeat) ONS(ons.0) ,XIO(heartbeat) ONS(ons.1) ]RES(heartbeatCheckTimer);]]>
+</Text>
+</Rung>
+<Rung Number="3" Type="N">
+<Text>
+<![CDATA[[TON(heartbeatCheckTimer,?,?) ,XIC(heartbeatCheckTimer.TT) OTE(connected) ];]]>
+</Text>
+</Rung>
+</RLLContent>
+</Routine>
+</Routines>
+</AddOnInstructionDefinition>
+<AddOnInstructionDefinition Name="SeqCtrl" Revision="3.3" ExecutePrescan="false" ExecutePostscan="false" ExecuteEnableInFalse="false" CreatedDate="2017-04-12T15:18:43.317Z" CreatedBy="A-I-CORP\ZWood" EditedDate="2024-09-04T21:38:06.473Z" EditedBy="A-I-CORP\ZWood" SoftwareRevision="v35.01">
+<RevisionNote>
+<![CDATA[v3.3 Fixed bug where state bits and step where out of sync for 1 scan
+v3.2 fixed bug where first scan would not init to aborted
+v3.1 add state back in and inActiveState outputs and fixed abortVisible bug
+v3.0 Major overhaul of states, cmds, UDTs, etc. See AIC Wiki for details.
+...]]>
+</RevisionNote>
+<Parameters>
+<Parameter Name="EnableIn" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Enable Input - System Defined Parameter]]>
+</Description>
+</Parameter>
+<Parameter Name="EnableOut" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Enable Output - System Defined Parameter]]>
+</Description>
+</Parameter>
+<Parameter Name="mode" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="true" Visible="true" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[System Mode. 0 = Manual (enable HMI). 1 = Auto (disable HMI)]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="autoModeOverride" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="true" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Optional bit to externally change the mode to run Auto Mode Code while in Manual Mode]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="disableHmiStart" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="true" Visible="true" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Typically tied to estop. Set to 0 to ignore]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="faulted" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="true" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Seq faulted ind]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="running" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Steps 0 - 1999]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="complete" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Step 2000]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="pausing" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Steps 3000-3999]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="paused" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Step 4000]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="restarting" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Steps 5000-5999]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="aborting" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Steps 6000-6999]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="aborted" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Step 7000]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="inAnActiveState" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Seq is executing code]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="cmdStart" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Set on to start/restart the sequence]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="cmdPause" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Set on to pause or hold a running sequence]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="cmdAbort" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Set on to immeditely stop a sequence]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="autoStep" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="true" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Enables automatic step transitions]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="singleStep" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="true" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Enables a single step transition when autoStep = False]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="hmiCmdStart" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[HMI start command. Enabled when mode = False]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="hmiCmdPause" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[HMI pause command. Enabled when mode = False]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="hmiCmdAbort" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[HMI abort command. Enabled when mode = False]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="hmiStartVisible" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[HMIi start button enable]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="hmiPauseVisible" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[HMI pause button enable]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="hmiAbortVisible" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[HMI abort button enable]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="currentStep" TagType="Base" DataType="DINT" Usage="Output" Radix="Decimal" Required="false" Visible="true" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Active Step Number]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[7000]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="7000"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="nextStep" TagType="Base" DataType="DINT" Usage="Input" Radix="Decimal" Required="false" Visible="true" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Next Step Number]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[7000]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="7000"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="fault" TagType="Base" DataType="DINT" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Fault code(s). Typically bit addressed]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="ons" TagType="Base" DataType="DINT" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Bits for external ONS use]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="stepBeforeAbort" TagType="Base" DataType="DINT" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[The step number before the most recent successful abort command]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="stepBeforePause" TagType="Base" DataType="DINT" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[The step number before the most recent successful hold command]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="runningStepBeforePause" TagType="Base" DataType="DINT" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[The running step before the last pause.]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="state" TagType="Base" DataType="DINT" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only">
+<Description>
+<![CDATA[Bit address state indicator for certain more limited HMIs]]>
+</Description>
+<Comments>
+<Comment Operand=".0">
+<![CDATA[running]]>
+</Comment>
+<Comment Operand=".1">
+<![CDATA[complete]]>
+</Comment>
+<Comment Operand=".2">
+<![CDATA[pausing]]>
+</Comment>
+<Comment Operand=".3">
+<![CDATA[paused]]>
+</Comment>
+<Comment Operand=".4">
+<![CDATA[restarting]]>
+</Comment>
+<Comment Operand=".5">
+<![CDATA[aborting]]>
+</Comment>
+<Comment Operand=".6">
+<![CDATA[aborted]]>
+</Comment>
+</Comments>
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</DefaultData>
+</Parameter>
+<Parameter Name="startupStep" TagType="Base" DataType="DINT" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read/Write">
+<Description>
+<![CDATA[Step which sequence will init to on first scan. Defaults to aborted]]>
+</Description>
+<DefaultData Format="L5K">
+<![CDATA[7000]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="7000"/>
+</DefaultData>
+</Parameter>
+</Parameters>
+<LocalTags>
+<LocalTag Name="internalOns" DataType="DINT" Radix="Decimal" ExternalAccess="None">
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</DefaultData>
+</LocalTag>
+<LocalTag Name="hmiModeSel" DataType="BOOL" Radix="Decimal" ExternalAccess="None">
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</LocalTag>
+<LocalTag Name="watchdog" DataType="TIMER" ExternalAccess="None">
+<DefaultData Format="L5K">
+<![CDATA[[0,0,0]]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<Structure DataType="TIMER">
+<DataValueMember Name="PRE" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="ACC" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="EN" DataType="BOOL" Value="0"/>
+<DataValueMember Name="TT" DataType="BOOL" Value="0"/>
+<DataValueMember Name="DN" DataType="BOOL" Value="0"/>
+</Structure>
+</DefaultData>
+</LocalTag>
+<LocalTag Name="stateUpdated" DataType="BOOL" Radix="Decimal" ExternalAccess="None">
+<DefaultData Format="L5K">
+<![CDATA[0]]>
+</DefaultData>
+<DefaultData Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</DefaultData>
+</LocalTag>
+</LocalTags>
+<Routines>
+<Routine Name="Logic" Type="RLL">
+<RLLContent>
+<Rung Number="0" Type="N">
+<Comment>
+<![CDATA[SeqCtrl: Handles the basic logic for state transitions and HMI handling for sequences. 
+
+To Use:
+	- Place on a rung that runs every scan BEFORE any of the steps
+	- Map/set the mode input to True (1) to disable HMI control. 
+	- Map/Set the disableHmiStart input to True (1) to disable the HMI start button, typically for when the safety system is not in a safe state.
+
+Sequences, written externally, should always be interacted with by using the following inputs:
+- cmdStart
+- cmdAbort
+- cmdPause
+- nextStep
+
+NEVER write directly to currentStep.
+
+See AIC Wiki for more details]]>
+</Comment>
+<Text>
+<![CDATA[NOP();]]>
+</Text>
+</Rung>
+<Rung Number="1" Type="N">
+<Comment>
+<![CDATA[Change the startup step on first scan/power on
+]]>
+</Comment>
+<Text>
+<![CDATA[XIC(S:FS)MOVE(startupStep,currentStep)MOVE(startupStep,nextStep);]]>
+</Text>
+</Rung>
+<Rung Number="2" Type="N">
+<Comment>
+<![CDATA[Use a bool and jump label to updated the state (running/aborted/etc) bits twice. 
+- Once here at the beginning before we check what commands are valid, and 
+- a second time at the end once the step has been updated]]>
+</Comment>
+<Text>
+<![CDATA[XIO(stateUpdated)JMP(updateState);]]>
+</Text>
+</Rung>
+<Rung Number="3" Type="N">
+<Text>
+<![CDATA[LBL(begin)NOP();]]>
+</Text>
+</Rung>
+<Rung Number="4" Type="N">
+<Comment>
+<![CDATA[Set the current "mode"
+need to have a pseudo-automode when running code so that IO will respond, but system is not in full running/automode]]>
+</Comment>
+<Text>
+<![CDATA[XIC(mode)XIO(autoModeOverride)OTE(hmiModeSel);]]>
+</Text>
+</Rung>
+<Rung Number="5" Type="N">
+<Comment>
+<![CDATA[/////////   HMI Button Handling   /////////
+
+When valid, set the corresponding PLC command(s) when the HMI requests it. HMI should Set On the commands (once) and this program will turn them off.
+
+Start Button]]>
+</Comment>
+<Text>
+<![CDATA[XIC(hmiCmdStart)ONS(internalOns.1)[XIO(hmiModeSel) XIO(disableHmiStart) OTL(cmdStart) OTL(autoModeOverride) ,OTU(hmiCmdStart) ];]]>
+</Text>
+</Rung>
+<Rung Number="6" Type="N">
+<Comment>
+<![CDATA[Start Button Visibility]]>
+</Comment>
+<Text>
+<![CDATA[XIO(hmiModeSel)XIO(disableHmiStart)[XIC(complete) ,XIC(paused) ,XIC(aborted) ]OTE(hmiStartVisible);]]>
+</Text>
+</Rung>
+<Rung Number="7" Type="N">
+<Comment>
+<![CDATA[Abort]]>
+</Comment>
+<Text>
+<![CDATA[XIC(hmiCmdAbort)ONS(internalOns.2)[XIO(hmiModeSel) OTL(cmdAbort) OTL(autoModeOverride) ,OTU(hmiCmdAbort) ];]]>
+</Text>
+</Rung>
+<Rung Number="8" Type="N">
+<Comment>
+<![CDATA[Abort Button Visibility]]>
+</Comment>
+<Text>
+<![CDATA[XIO(hmiModeSel)XIO(complete)XIO(aborted)OTE(hmiAbortVisible);]]>
+</Text>
+</Rung>
+<Rung Number="9" Type="N">
+<Comment>
+<![CDATA[Pause (Hold)]]>
+</Comment>
+<Text>
+<![CDATA[XIC(hmiCmdPause)ONS(internalOns.4)[XIO(hmiModeSel) OTL(cmdPause) OTL(autoModeOverride) ,OTU(hmiCmdPause) ];]]>
+</Text>
+</Rung>
+<Rung Number="10" Type="N">
+<Comment>
+<![CDATA[Hold Button Visibility]]>
+</Comment>
+<Text>
+<![CDATA[XIO(hmiModeSel)[XIC(running) ,XIC(pausing) ,XIC(restarting) ]OTE(hmiPauseVisible);]]>
+</Text>
+</Rung>
+<Rung Number="11" Type="N">
+<Comment>
+<![CDATA[Reset AutoMode Override]]>
+</Comment>
+<Text>
+<![CDATA[[XIC(aborted) ONS(internalOns.7) ,XIC(complete) ONS(internalOns.8) ,XIC(paused) ONS(internalOns.9) ]OTU(autoModeOverride);]]>
+</Text>
+</Rung>
+<Rung Number="12" Type="N">
+<Comment>
+<![CDATA[In Active State: a shortcut to check if the sequence is running code vs is in and idle state]]>
+</Comment>
+<Text>
+<![CDATA[[XIC(running) ,XIC(pausing) ,XIC(restarting) ,XIC(aborting) ]OTE(inAnActiveState);]]>
+</Text>
+</Rung>
+<Rung Number="13" Type="N">
+<Comment>
+<![CDATA[/////////   Reject Invalid CMDs   /////////
+
+Prevents random bits from getting latched on and causing unexpected execution
+
+
+]]>
+</Comment>
+<Text>
+<![CDATA[XIC(cmdAbort)[XIC(complete) ,XIC(aborting) ,XIC(aborted) ]OTU(cmdAbort)OTU(autoModeOverride);]]>
+</Text>
+</Rung>
+<Rung Number="14" Type="N">
+<Text>
+<![CDATA[XIC(cmdStart)XIO(complete)XIO(aborted)XIO(paused)OTU(cmdStart)OTU(autoModeOverride);]]>
+</Text>
+</Rung>
+<Rung Number="15" Type="N">
+<Text>
+<![CDATA[XIC(cmdPause)XIO(running)XIO(restarting)OTU(cmdPause)OTU(autoModeOverride);]]>
+</Text>
+</Rung>
+<Rung Number="16" Type="N">
+<Comment>
+<![CDATA[/////////   Parse Commands and Transition States   //////////
+
+Any state transition that requires a command should be handled here. Exceptions are:
+- going from running to complete
+- going from pausing to paused
+- going from aborting to aborted
+
+Respond to start command. Varies based on state]]>
+</Comment>
+<Text>
+<![CDATA[XIC(cmdStart)[[XIC(complete) ,XIC(aborted) ] MOVE(0,nextStep) ,XIC(paused) MOVE(5000,nextStep) ,OTU(cmdStart) ];]]>
+</Text>
+</Rung>
+<Rung Number="17" Type="N">
+<Comment>
+<![CDATA[Respond to pause command
+
+]]>
+</Comment>
+<Text>
+<![CDATA[XIC(cmdPause)[MOVE(3000,nextStep) ,ONS(internalOns.13) [MOVE(currentStep,stepBeforePause) ,XIC(running) MOVE(currentStep,runningStepBeforePause) ] ,OTU(cmdPause) ];]]>
+</Text>
+</Rung>
+<Rung Number="18" Type="N">
+<Comment>
+<![CDATA[
+Respond to Abort Command
+
+]]>
+</Comment>
+<Text>
+<![CDATA[XIC(cmdAbort)[MOVE(6000,nextStep) ,ONS(internalOns.12) MOVE(currentStep,stepBeforeAbort) ,OTU(cmdAbort) ];]]>
+</Text>
+</Rung>
+<Rung Number="19" Type="N">
+<Comment>
+<![CDATA[/////////   Step Control   /////////
+
+Enable autoStep to run code normally
+Disable autoStep and manually toggle singleStep for control of sequence execution
+
+NOTE: This should be last rung of any sort of step control logic so that all parsing and checks of commands happen before the step number acutally changes.
+
+]]>
+</Comment>
+<Text>
+<![CDATA[[XIC(autoStep) ,XIC(singleStep) ][MOVE(nextStep,currentStep) ,OTU(singleStep) ];]]>
+</Text>
+</Rung>
+<Rung Number="20" Type="N">
+<Text>
+<![CDATA[LBL(updateState)NOP();]]>
+</Text>
+</Rung>
+<Rung Number="21" Type="N">
+<Comment>
+<![CDATA[/////////   Set Status Bits   /////////
+
+
+Running Status]]>
+</Comment>
+<Text>
+<![CDATA[LIMIT(0,currentStep,1999)OTE(running);]]>
+</Text>
+</Rung>
+<Rung Number="22" Type="N">
+<Comment>
+<![CDATA[Complete Status]]>
+</Comment>
+<Text>
+<![CDATA[EQ(currentStep,2000)OTE(complete);]]>
+</Text>
+</Rung>
+<Rung Number="23" Type="N">
+<Comment>
+<![CDATA[Pausing Status]]>
+</Comment>
+<Text>
+<![CDATA[LIMIT(3000,currentStep,3999)OTE(pausing);]]>
+</Text>
+</Rung>
+<Rung Number="24" Type="N">
+<Comment>
+<![CDATA[Paused Status]]>
+</Comment>
+<Text>
+<![CDATA[EQ(currentStep,4000)OTE(paused);]]>
+</Text>
+</Rung>
+<Rung Number="25" Type="N">
+<Comment>
+<![CDATA[Restarting Status]]>
+</Comment>
+<Text>
+<![CDATA[LIMIT(5000,currentStep,5999)OTE(restarting);]]>
+</Text>
+</Rung>
+<Rung Number="26" Type="N">
+<Comment>
+<![CDATA[Aborting Status]]>
+</Comment>
+<Text>
+<![CDATA[LIMIT(6000,currentStep,6999)OTE(aborting);]]>
+</Text>
+</Rung>
+<Rung Number="27" Type="N">
+<Comment>
+<![CDATA[Aborted Status]]>
+</Comment>
+<Text>
+<![CDATA[EQ(currentStep,7000)OTE(aborted);]]>
+</Text>
+</Rung>
+<Rung Number="28" Type="N">
+<Comment>
+<![CDATA[Use stateUpdated bit to call this chunk of code twice. Once at the beginning in case someone messed with currentStep and then at the end in normal order to reflect what changed]]>
+</Comment>
+<Text>
+<![CDATA[XIO(stateUpdated)OTL(stateUpdated)JMP(begin);]]>
+</Text>
+</Rung>
+<Rung Number="29" Type="N">
+<Text>
+<![CDATA[OTU(stateUpdated);]]>
+</Text>
+</Rung>
+<Rung Number="30" Type="N">
+<Comment>
+<![CDATA[/////////   Faulted Status   /////////
+
+Set faulted status bit if any fault bit is set on]]>
+</Comment>
+<Text>
+<![CDATA[NE(fault,0)OTE(faulted);]]>
+</Text>
+</Rung>
+<Rung Number="31" Type="N">
+<Comment>
+<![CDATA[Create a bit addressed state output for HMIs with limited functionality (like C-More or View Studio)]]>
+</Comment>
+<Text>
+<![CDATA[XIC(running)OTE(state.0);]]>
+</Text>
+</Rung>
+<Rung Number="32" Type="N">
+<Text>
+<![CDATA[XIC(complete)OTE(state.1);]]>
+</Text>
+</Rung>
+<Rung Number="33" Type="N">
+<Text>
+<![CDATA[XIC(pausing)OTE(state.2);]]>
+</Text>
+</Rung>
+<Rung Number="34" Type="N">
+<Text>
+<![CDATA[XIC(paused)OTE(state.3);]]>
+</Text>
+</Rung>
+<Rung Number="35" Type="N">
+<Text>
+<![CDATA[XIC(restarting)OTE(state.4);]]>
+</Text>
+</Rung>
+<Rung Number="36" Type="N">
+<Text>
+<![CDATA[XIC(aborting)OTE(state.5);]]>
+</Text>
+</Rung>
+<Rung Number="37" Type="N">
+<Text>
+<![CDATA[XIC(aborted)OTE(state.6);]]>
+</Text>
+</Rung>
+</RLLContent>
+</Routine>
+</Routines>
+</AddOnInstructionDefinition>
+</AddOnInstructionDefinitions>
+<Tags/>
+<Programs>
+<Program Name="Camera" TestEdits="false" MainRoutineName="Main" Disabled="false" UseAsFolder="false">
+<Tags>
+<Tag Name="camera" TagType="Base" DataType="AicCamera" Usage="Public" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[[[0,0,0],[0]]]]>
+</Data>
+<Data Format="Decorated">
+<Structure DataType="AicCamera">
+<StructureMember Name="in" DataType="AicCameraIn">
+<DataValueMember Name="running" DataType="BOOL" Value="0"/>
+<DataValueMember Name="faulted" DataType="BOOL" Value="0"/>
+<DataValueMember Name="inspectionCount" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="result" DataType="DINT" Radix="Decimal" Value="0"/>
+</StructureMember>
+<StructureMember Name="out" DataType="AicCameraOut">
+<DataValueMember Name="start" DataType="BOOL" Value="0"/>
+<DataValueMember Name="stop" DataType="BOOL" Value="0"/>
+<DataValueMember Name="trigger" DataType="BOOL" Value="0"/>
+</StructureMember>
+</Structure>
+</Data>
+</Tag>
+<Tag Name="cameraMinOffTime" TagType="Base" DataType="TIMER" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[[-1610449746,500,500]]]>
+</Data>
+<Data Format="Decorated">
+<Structure DataType="TIMER">
+<DataValueMember Name="PRE" DataType="DINT" Radix="Decimal" Value="500"/>
+<DataValueMember Name="ACC" DataType="DINT" Radix="Decimal" Value="500"/>
+<DataValueMember Name="EN" DataType="BOOL" Value="1"/>
+<DataValueMember Name="TT" DataType="BOOL" Value="0"/>
+<DataValueMember Name="DN" DataType="BOOL" Value="1"/>
+</Structure>
+</Data>
+</Tag>
+<Tag Name="cameraTimeout" TagType="Base" DataType="TIMER" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[[0,2000,0]]]>
+</Data>
+<Data Format="Decorated">
+<Structure DataType="TIMER">
+<DataValueMember Name="PRE" DataType="DINT" Radix="Decimal" Value="2000"/>
+<DataValueMember Name="ACC" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="EN" DataType="BOOL" Value="0"/>
+<DataValueMember Name="TT" DataType="BOOL" Value="0"/>
+<DataValueMember Name="DN" DataType="BOOL" Value="0"/>
+</Structure>
+</Data>
+</Tag>
+<Tag Name="camSeq" TagType="Base" DataType="SeqCtrl" Usage="Public" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Comments>
+<Comment Operand=".FAULT.0">
+<![CDATA[camera took too long]]>
+</Comment>
+<Comment Operand=".FAULT.1">
+<![CDATA[camera did not start]]>
+</Comment>
+</Comments>
+<Data Format="L5K">
+<![CDATA[[33689607,7000,7000,0,0,5000,0,0,64,7000,128,[0,2000,0]]]]>
+</Data>
+<Data Format="Decorated">
+<Structure DataType="SeqCtrl">
+<DataValueMember Name="EnableIn" DataType="BOOL" Value="1"/>
+<DataValueMember Name="EnableOut" DataType="BOOL" Value="1"/>
+<DataValueMember Name="mode" DataType="BOOL" Value="1"/>
+<DataValueMember Name="autoModeOverride" DataType="BOOL" Value="0"/>
+<DataValueMember Name="disableHmiStart" DataType="BOOL" Value="0"/>
+<DataValueMember Name="faulted" DataType="BOOL" Value="0"/>
+<DataValueMember Name="running" DataType="BOOL" Value="0"/>
+<DataValueMember Name="complete" DataType="BOOL" Value="0"/>
+<DataValueMember Name="pausing" DataType="BOOL" Value="0"/>
+<DataValueMember Name="paused" DataType="BOOL" Value="0"/>
+<DataValueMember Name="restarting" DataType="BOOL" Value="0"/>
+<DataValueMember Name="aborting" DataType="BOOL" Value="0"/>
+<DataValueMember Name="aborted" DataType="BOOL" Value="1"/>
+<DataValueMember Name="inAnActiveState" DataType="BOOL" Value="0"/>
+<DataValueMember Name="cmdStart" DataType="BOOL" Value="0"/>
+<DataValueMember Name="cmdPause" DataType="BOOL" Value="0"/>
+<DataValueMember Name="cmdAbort" DataType="BOOL" Value="0"/>
+<DataValueMember Name="autoStep" DataType="BOOL" Value="1"/>
+<DataValueMember Name="singleStep" DataType="BOOL" Value="0"/>
+<DataValueMember Name="hmiCmdStart" DataType="BOOL" Value="0"/>
+<DataValueMember Name="hmiCmdPause" DataType="BOOL" Value="0"/>
+<DataValueMember Name="hmiCmdAbort" DataType="BOOL" Value="0"/>
+<DataValueMember Name="hmiStartVisible" DataType="BOOL" Value="0"/>
+<DataValueMember Name="hmiPauseVisible" DataType="BOOL" Value="0"/>
+<DataValueMember Name="hmiAbortVisible" DataType="BOOL" Value="0"/>
+<DataValueMember Name="currentStep" DataType="DINT" Radix="Decimal" Value="7000"/>
+<DataValueMember Name="nextStep" DataType="DINT" Radix="Decimal" Value="7000"/>
+<DataValueMember Name="fault" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="ons" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="stepBeforeAbort" DataType="DINT" Radix="Decimal" Value="5000"/>
+<DataValueMember Name="stepBeforePause" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="runningStepBeforePause" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="state" DataType="DINT" Radix="Decimal" Value="64"/>
+<DataValueMember Name="startupStep" DataType="DINT" Radix="Decimal" Value="7000"/>
+</Structure>
+</Data>
+</Tag>
+<Tag Name="camStartTimeout" TagType="Base" DataType="TIMER" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[[0,1000,0]]]>
+</Data>
+<Data Format="Decorated">
+<Structure DataType="TIMER">
+<DataValueMember Name="PRE" DataType="DINT" Radix="Decimal" Value="1000"/>
+<DataValueMember Name="ACC" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="EN" DataType="BOOL" Value="0"/>
+<DataValueMember Name="TT" DataType="BOOL" Value="0"/>
+<DataValueMember Name="DN" DataType="BOOL" Value="0"/>
+</Structure>
+</Data>
+</Tag>
+<Tag Name="camTriggerPulseTime" TagType="Base" DataType="TIMER" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[[365847,250,0]]]>
+</Data>
+<Data Format="Decorated">
+<Structure DataType="TIMER">
+<DataValueMember Name="PRE" DataType="DINT" Radix="Decimal" Value="250"/>
+<DataValueMember Name="ACC" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="EN" DataType="BOOL" Value="0"/>
+<DataValueMember Name="TT" DataType="BOOL" Value="0"/>
+<DataValueMember Name="DN" DataType="BOOL" Value="0"/>
+</Structure>
+</Data>
+</Tag>
+<Tag Name="exampleTrigger" TagType="Base" DataType="BOOL" Radix="Decimal" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[0]]>
+</Data>
+<Data Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</Data>
+</Tag>
+<Tag Name="inspectionCycleTime" TagType="Base" DataType="DINT" Radix="Decimal" Usage="Output" Constant="false" ExternalAccess="Read Only" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[0]]>
+</Data>
+<Data Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</Data>
+</Tag>
+<Tag Name="lastInspectionCnt" TagType="Base" DataType="DINT" Radix="Decimal" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[0]]>
+</Data>
+<Data Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</Data>
+</Tag>
+<Tag Name="lastResult" TagType="Base" DataType="DINT" Radix="Decimal" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[0]]>
+</Data>
+<Data Format="Decorated">
+<DataValue DataType="DINT" Radix="Decimal" Value="0"/>
+</Data>
+</Tag>
+<Tag Name="waitForResults" TagType="Base" DataType="TIMER" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[[0,100,0]]]>
+</Data>
+<Data Format="Decorated">
+<Structure DataType="TIMER">
+<DataValueMember Name="PRE" DataType="DINT" Radix="Decimal" Value="100"/>
+<DataValueMember Name="ACC" DataType="DINT" Radix="Decimal" Value="0"/>
+<DataValueMember Name="EN" DataType="BOOL" Value="0"/>
+<DataValueMember Name="TT" DataType="BOOL" Value="0"/>
+<DataValueMember Name="DN" DataType="BOOL" Value="0"/>
+</Structure>
+</Data>
+</Tag>
+</Tags>
+<Routines>
+<Routine Name="CameraSequence" Type="RLL">
+<RLLContent>
+<Rung Number="0" Type="N">
+<Comment>
+<![CDATA[<Put your sequence description here. What does it do?>]]>
+</Comment>
+<Text>
+<![CDATA[NOP();]]>
+</Text>
+</Rung>
+<Rung Number="1" Type="N">
+<Comment>
+<![CDATA[//////////   Prescan   /////////
+
+Enforce a minimum time between triggers. The camera usually only react so quickly
+
+### Modify as needed ###]]>
+</Comment>
+<Text>
+<![CDATA[XIO(camera.out.trigger)TON(cameraMinOffTime,?,?);]]>
+</Text>
+</Rung>
+<Rung Number="2" Type="N">
+<Comment>
+<![CDATA[Abort if the camera faults or stops while running]]>
+</Comment>
+<Text>
+<![CDATA[XIC(camSeq.running)[XIC(camera.in.faulted) GT(camSeq.currentStep,0) ,XIO(camera.in.running) GT(camSeq.currentStep,0) ]OTL(camSeq.cmdAbort);]]>
+</Text>
+</Rung>
+<Rung Number="3" Type="N">
+<Comment>
+<![CDATA[/////////   Sequence Status and Control   /////////
+
+### set mode and disableHmiStart accordingly ###]]>
+</Comment>
+<Text>
+<![CDATA[SeqCtrl(camSeq,1,0);]]>
+</Text>
+</Rung>
+<Rung Number="4" Type="N">
+<Comment>
+<![CDATA[/////////   Running   /////////
+
+Steps 0 - 1999.
+]]>
+</Comment>
+<Text>
+<![CDATA[EQ(camSeq.currentStep,0)MOVE(0,camSeq.fault)OTU(camera.in.faulted)MOVE(100,camSeq.nextStep);]]>
+</Text>
+</Rung>
+<Rung Number="5" Type="N">
+<Comment>
+<![CDATA[Make sure the camera process is running]]>
+</Comment>
+<Text>
+<![CDATA[EQ(camSeq.currentStep,100)[XIO(camera.in.running) ONS(camSeq.ons.0) OTL(camera.out.start) ,XIC(camera.in.running) OTU(camera.out.start) MOVE(500,camSeq.nextStep) ,TON(camStartTimeout,?,?) ,XIC(camStartTimeout.DN) OTL(camSeq.fault.1) OTL(camSeq.cmdAbort) ];]]>
+</Text>
+</Rung>
+<Rung Number="6" Type="N">
+<Comment>
+<![CDATA[Wait for a trigger, turn on lights, etc.
+
+### Modify as needed ###]]>
+</Comment>
+<Text>
+<![CDATA[EQ(camSeq.currentStep,500)XIC(exampleTrigger)MOVE(1000,camSeq.nextStep);]]>
+</Text>
+</Rung>
+<Rung Number="7" Type="N">
+<Comment>
+<![CDATA[/// Trigger the camera ///
+
+Start the camera and log the last inspection count value (used to determine when the camera process is done)]]>
+</Comment>
+<Text>
+<![CDATA[EQ(camSeq.currentStep,1000)XIC(cameraMinOffTime.DN)[OTL(camera.out.trigger) ,MOVE(camera.in.inspectionCount,lastInspectionCnt) ,MOVE(1100,camSeq.nextStep) ];]]>
+</Text>
+</Rung>
+<Rung Number="8" Type="N">
+<Comment>
+<![CDATA[automatically turn off the trigger and set a timer to ensure its off for a few scans so 
+the PC has a chance to see the change. The Python script will only trigger on a rising edge.
+
+### Modify as needed ###
+Exact speed can vary with PC and process]]>
+</Comment>
+<Text>
+<![CDATA[[XIC(camera.out.trigger) TON(camTriggerPulseTime,?,?) ,XIC(camTriggerPulseTime.DN) OTU(camera.out.trigger) ];]]>
+</Text>
+</Rung>
+<Rung Number="9" Type="N">
+<Comment>
+<![CDATA[Wait for the inspection count to increment (meaning we have a new result), and the parse the result
+
+Abort if the camera takes too long
+
+Store the camera timeout as an approx measure of inspection end-to-end latency]]>
+</Comment>
+<Text>
+<![CDATA[EQ(camSeq.currentStep,1100)[NE(camera.in.inspectionCount,lastInspectionCnt) MOVE(1110,camSeq.nextStep) ,TON(cameraTimeout,?,?) ,XIC(cameraTimeout.DN) OTL(camSeq.fault.0) OTL(camSeq.cmdAbort) ,MOVE(cameraTimeout.ACC,inspectionCycleTime) ];]]>
+</Text>
+</Rung>
+<Rung Number="10" Type="N">
+<Comment>
+<![CDATA[Wait for results. 
+
+Very occassionally they don't seem to arrive at the same time as the inspection cnt since
+tag writes can get split apart into multiple packets]]>
+</Comment>
+<Text>
+<![CDATA[EQ(camSeq.currentStep,1110)[TON(waitForResults,?,?) ,XIC(waitForResults.DN) MOVE(1120,camSeq.nextStep) ];]]>
+</Text>
+</Rung>
+<Rung Number="11" Type="N">
+<Comment>
+<![CDATA[Parse the results
+
+### Modify as needed ###]]>
+</Comment>
+<Text>
+<![CDATA[EQ(camSeq.currentStep,1120)[MOVE(camera.in.result,lastResult) ,MOVE(1900,camSeq.nextStep) ];]]>
+</Text>
+</Rung>
+<Rung Number="12" Type="N">
+<Comment>
+<![CDATA[### Modify as needed ###
+
+Turn off lights, clean up results, reloop if desired, etc]]>
+</Comment>
+<Text>
+<![CDATA[EQ(camSeq.currentStep,1900)MOVE(2000,camSeq.nextStep);]]>
+</Text>
+</Rung>
+<Rung Number="13" Type="N">
+<Comment>
+<![CDATA[/////////   COMPLETE   /////////
+
+Step 2000. Done. Waiting for start command to go back to beginning of running. 
+Step transition handled by SeqCtrl AOI.]]>
+</Comment>
+<Text>
+<![CDATA[NOP();]]>
+</Text>
+</Rung>
+<Rung Number="14" Type="N">
+<Comment>
+<![CDATA[/////////   ABORTING   /////////
+
+Don't need to stop camera process on abort. It will sit idle waiting for a trigger.
+]]>
+</Comment>
+<Text>
+<![CDATA[EQ(camSeq.currentStep,6000)MOVE(7000,camSeq.nextStep);]]>
+</Text>
+</Rung>
+<Rung Number="15" Type="N">
+<Comment>
+<![CDATA[/////////   Aborted   /////////
+
+Step 7000. Program Stopped/Canceled. Waiting for start to go back to beginning of running.
+Step transition handled by SeqCtrl AOI]]>
+</Comment>
+<Text>
+<![CDATA[NOP();]]>
+</Text>
+</Rung>
+</RLLContent>
+</Routine>
+<Routine Name="Main" Type="RLL">
+<RLLContent>
+<Rung Number="0" Type="N">
+<Text>
+<![CDATA[JSR(CameraSequence,0);]]>
+</Text>
+</Rung>
+</RLLContent>
+</Routine>
+</Routines>
+</Program>
+<Program Name="MapIO" TestEdits="false" MainRoutineName="Main" Disabled="false" UseAsFolder="false">
+<Tags>
+<Tag Name="cameraConnection" TagType="Base" DataType="HeartbeatCheck" Usage="Public" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[[7,1250,1,[-1610449738,1250,1250]]]]>
+</Data>
+<Data Format="Decorated">
+<Structure DataType="HeartbeatCheck">
+<DataValueMember Name="EnableIn" DataType="BOOL" Value="1"/>
+<DataValueMember Name="EnableOut" DataType="BOOL" Value="1"/>
+<DataValueMember Name="heartbeat" DataType="BOOL" Value="1"/>
+<DataValueMember Name="connected" DataType="BOOL" Value="0"/>
+<DataValueMember Name="heartbeatInterval" DataType="DINT" Radix="Decimal" Value="1250"/>
+</Structure>
+</Data>
+</Tag>
+<Tag Name="test_tag" TagType="Base" DataType="BOOL" Radix="Decimal" Constant="false" ExternalAccess="Read/Write" OpcUaAccess="None">
+<Data Format="L5K">
+<![CDATA[0]]>
+</Data>
+<Data Format="Decorated">
+<DataValue DataType="BOOL" Radix="Decimal" Value="0"/>
+</Data>
+</Tag>
+</Tags>
+<Routines>
+<Routine Name="CheckConnections" Type="RLL">
+<RLLContent>
+<Rung Number="0" Type="N">
+<Comment>
+<![CDATA[Use the heartbeat check AOI to check if the camera program is online. This should run at all times that the PC is on and the camera app is alive. 
+
+Each individual camera process can have its own connection heartbeat, but these can be enabled/disable individually if you only need one heartbeat check.]]>
+</Comment>
+<Text>
+<![CDATA[NOP();]]>
+</Text>
+</Rung>
+<Rung Number="1" Type="N">
+<Comment>
+<![CDATA[Note: camera program uses an explicit (class 3) connection and write directly to the heartbeat tag]]>
+</Comment>
+<Text>
+<![CDATA[HeartbeatCheck(cameraConnection);]]>
+</Text>
+</Rung>
+</RLLContent>
+</Routine>
+<Routine Name="Main" Type="RLL">
+<RLLContent>
+<Rung Number="0" Type="N">
+<Text>
+<![CDATA[JSR(CheckConnections,0);]]>
+</Text>
+</Rung>
+</RLLContent>
+</Routine>
+</Routines>
+</Program>
+</Programs>
+<Tasks>
+<Task Name="MainTask" Type="CONTINUOUS" Priority="10" Watchdog="500" DisableUpdateOutputs="false" InhibitTask="false">
+<ScheduledPrograms>
+<ScheduledProgram Name="MapIO"/>
+<ScheduledProgram Name="Camera"/>
+</ScheduledPrograms>
+</Task>
+</Tasks>
+<CST MasterID="0"/>
+<WallClockTime LocalTimeAdjustment="0" TimeZone="0"/>
+<Trends/>
+<DataLogs/>
+<TimeSynchronize Priority1="128" Priority2="128" PTPEnable="false"/>
+<EthernetPorts>
+<EthernetPort Port="1" Label="A1" PortEnabled="true"/>
+<EthernetPort Port="2" Label="A2" PortEnabled="true"/>
+</EthernetPorts>
+<OpcUaInfo EnabledPorts=""/>
+</Controller>
+</RSLogix5000Content>

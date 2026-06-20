@@ -1,0 +1,157 @@
+# Studio 5000 tempfiles
+*.Sem
+*.Wrk
+*BAK*.acd
+*.ACD_*
+*.acd_*
+*.Recovery
+
+# Local Logix Designer SDK wheel (not redistributable, copy yours here)
+vendor/
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+# 通常、バイナリやビルド成果物はコミットしません
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.toml
+.cache
+.pytest_cache/
+.coverage
+.coverage.*
+.autospec
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Translations
+*.mo
+*.pot
+
+# Django staff
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff
+instance/
+.webassets-cache
+
+# Scrapy stuff
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+.ipython/
+
+# pyenv
+# 本地 Python バージョン管理用設定
+.python-version
+
+# pipenv
+# Pipfile.lock はコミットすることが推奨されますが、環境によっては除外します
+# Pipfile.lock
+
+# poetry
+# poetry.lock は通常コミットしますが、環境変数は除外します
+.poetry/
+
+# pdm
+.pdm-plugins/
+.pdm-build/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environments
+# 仮想環境ディレクトリは絶対にコミットしないでください
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# IDE specific settings (VS Code & PyCharm)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
