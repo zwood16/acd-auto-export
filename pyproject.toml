@@ -7,17 +7,32 @@ packages = ["acd_auto_export"]
 
 [project]
 name = "acd-auto-export"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.2.0"
+description = "Tool to export L5X files on ACD file change"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "logix-designer-sdk",
+    "logix-designer-sdk>=2.0.1",
     "watchdog>=6.0.0",
 ]
 
 [project.scripts]
 acd-auto-export = "acd_auto_export.cli:main"
 
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
+
 [tool.uv.sources]
-logix-designer-sdk = { path = "vendor/logix_designer_sdk-2.0.1-py3-none-any.whl" }
+logix-designer-sdk = { index = "logix-sdk" }
+
+[[tool.uv.index]]
+name = "logix-sdk"
+url = "file:///C:/Users/Public/Documents/Studio%205000/Logix%20Designer%20SDK/python"
+format = "flat"
+explicit = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["sdk: needs the Logix Designer SDK and a running LdSdkService (slow)"]

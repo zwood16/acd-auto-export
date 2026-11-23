@@ -18,46 +18,6 @@ from pathlib import Path
 from acd_auto_export.watcher import FileWatcher
 
 
-def _normalize_syspath() -> None:
-    """Replace UNC paths in sys.path with drive-letter equivalents.
-
-    When running from a mapped network drive on Windows, the exe launcher
-    may populate sys.path with raw UNC paths (\\\\server\\share\\...).
-    os.path.realpath() on a UNC path adds the \\\\?\\UNC\\ extended-length
-    prefix, which the .NET CLR refuses when loading assemblies.
-    Swapping those entries back to their drive-letter form (Z:\\...) keeps
-    the paths short and CLR-compatible.
-    """
-    if sys.platform != "win32":
-        return
-    import ctypes
-
-    unc_to_drive: dict[str, str] = {}
-    buf = ctypes.create_unicode_buffer(512)
-    buf_size = ctypes.c_ulong(512)
-    for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
-        drive = f"{letter}:"
-        buf_size.value = 512
-        if ctypes.windll.mpr.WNetGetConnectionW(drive, buf, ctypes.byref(buf_size)) == 0:
-            unc_to_drive[buf.value.lower()] = drive
-
-    if not unc_to_drive:
-        return
-
-    for i, p in enumerate(sys.path):
-        p_norm = p.replace("/", "\\")
-        # Strip extended-length UNC prefix (\\?\UNC\server\share -> \\server\share)
-        if p_norm.lower().startswith("\\\\?\\unc\\"):
-            p_norm = "\\\\" + p_norm[8:]
-        p_lower = p_norm.lower()
-        for unc, drive in unc_to_drive.items():
-            if p_lower.startswith(unc + "\\"):
-                sys.path[i] = drive + p_norm[len(unc):]
-                break
-            elif p_lower == unc:
-                sys.path[i] = drive
-                break
-
 
 def _run_convert(input_file: Path, output_dir: Path) -> None:
     """Run a single conversion synchronously.
@@ -153,7 +113,6 @@ def main() -> None:
     Parses command-line arguments and dispatches to the appropriate
     subcommand handler (``convert`` or ``watch``).
     """
-    _normalize_syspath()
     parser = argparse.ArgumentParser(
         prog="acd-auto-export",
         description="Export Logix Designer .ACD files to L5X format.",
@@ -175,7 +134,7 @@ def main() -> None:
     # -- watch subcommand --
     watch_parser = subparsers.add_parser(
         "watch",
-        help="Watch a directory and auto-convert any .ACD file that changes.",
+        help="Watch a .ACD file and re-export it to L5X whenever it changes.",
     )
     watch_parser.add_argument(
         "file",
@@ -183,7 +142,7 @@ def main() -> None:
     )
     watch_parser.add_argument(
         "-o", "--output",
-        help="Output directory (default: same as watched directory).",
+        help="Output directory (default: same directory as the watched file).",
     )
     watch_parser.set_defaults(func=cmd_watch)
 
